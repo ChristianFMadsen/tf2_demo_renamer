@@ -24,6 +24,7 @@ def update_dict(dict_name, key_name, action_type, tick, ks_length=0):
 demo_path = 'C:/Users/Christian/PycharmProjects/pythonProject/demo_test_dir/'
 quoted = re.compile('"[^"]*"')
 kill_streak_pattern = re.compile('Killstreak\s[0-9]+')
+include_killstreaks = False
 
 
 demos_processed = []
@@ -43,10 +44,11 @@ for line in f:
             if len(tick) > 3:
                 tick = tick[:len(tick) - 3] + 'k'
 
-            ks = kill_streak_pattern.findall(line)
-            if len(ks) > 0:
-                ks_length = ks[0][-1]
-                update_dict(naming_dict, demo_name, 'KS', tick, ks_length)
+            if include_killstreaks:
+                ks = kill_streak_pattern.findall(line)
+                if len(ks) > 0:
+                    ks_length = ks[0][-1]
+                    update_dict(naming_dict, demo_name, 'KS', tick, ks_length)
 
             if "Bookmark General" in line:
                 update_dict(naming_dict, demo_name, 'BM', tick)
